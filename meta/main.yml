@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Lumina Networks
+  description: Install Helm Charts.
+  company: Lumina Networks
+  issue_tracker_url: https://github.com/lumina-networks-oss/ansible-roles-helm-install/issues
+  license: MIT
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - bionic
+
+  galaxy_tags:
+    - system
+    - tools
+
+dependencies: []

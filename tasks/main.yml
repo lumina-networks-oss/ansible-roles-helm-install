@@ -1,0 +1,70 @@
+---
+- name: Create Helm temporary directory
+  file:
+    path: /tmp/helm
+    state: directory
+    mode: "0755"
+
+- name: Fetch Helm package
+  get_url:
+    url: 'https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz'
+    dest: /tmp/helm.tar.gz
+    checksum: '{{ helm_checksum }}'
+
+- name: Extract Helm package
+  unarchive:
+    remote_src: true
+    src: /tmp/helm.tar.gz
+    dest: /tmp/helm
+
+- name: Ensure "docker" group exists
+  group:
+    name: docker
+    state: present
+  become: true
+
+- name: Install helm to /usr/local/bin
+  copy:
+    remote_src: true
+    src: /tmp/helm/linux-amd64/helm
+    dest: /usr/local/bin/helm
+    owner: root
+    group: docker
+    mode: "0755"
+  become: true
+
+- name: Install tiller to /usr/local/bin
+  copy:
+    remote_src: true
+    src: /tmp/helm/linux-amd64/tiller
+    dest: /usr/local/bin/tiller
+    owner: root
+    group: docker
+    mode: "0755"
+  become: true
+
+# - name: Cleanup Helm temporary directory
+#   file:
+#     path: /tmp/helm
+#     state: absent
+
+# - name: Cleanup Helm temporary download
+#   file:
+#     path: /tmp/helm.tar.gz
+#     state: absent
+
+- name: Ensure bash_completion.d directory exists
+  file:
+    path: /etc/bash_completion.d
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Setup Helm tab-completion
+  shell: |
+    set -o pipefail
+    /usr/local/bin/helm completion bash | tee /etc/bash_completion.d/helm
+  args:
+    executable: /bin/bash
+  changed_when: false
+  become: true
