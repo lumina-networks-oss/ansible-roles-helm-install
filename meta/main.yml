@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: helm_install
   author: Lumina Networks
   description: Install Helm Charts.
   company: Lumina Networks
