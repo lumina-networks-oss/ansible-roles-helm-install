@@ -33,16 +33,6 @@
     mode: "0755"
   become: true
 
-- name: Install tiller to /usr/local/bin
-  copy:
-    remote_src: true
-    src: /tmp/helm/linux-amd64/tiller
-    dest: /usr/local/bin/tiller
-    owner: root
-    group: docker
-    mode: "0755"
-  become: true
-
 # - name: Cleanup Helm temporary directory
 #   file:
 #     path: /tmp/helm
